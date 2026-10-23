@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RayFit Marmitas - Alimentação Saudável & Alta Performance</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="assets/images/logo-rayfit.png" type="image/png">
+    
+    <!-- External CSS as requested -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <main class="main-wrapper">
+        <!-- ================================================================
+             DIV 1: INTRO DA PÁGINA (COM LOGO ORGÂNICA E ANIMÁVEL)
+             ================================================================ -->
+        <div class="section-intro" id="introSection">
+            <div class="intro-ambient-glow"></div>
+
+            <div class="intro-content">
+                <!-- Organic Contextualized Logo (No white background, animated & reactive) -->
+                <div class="logo-organic-container" id="logoOrganicContainer" title="RayFit Marmitas">
+                    <div class="logo-organic-backdrop"></div>
+                    <img src="assets/images/logo-rayfit.png" alt="RayFit Marmitas" class="logo-organic-img" id="logoOrganicImg">
+                </div>
+
+                <div class="intro-badge">
+                    <span class="intro-badge-dot"></span>
+                    <span>Alta Gastronomia Saudável</span>
+                </div>
+
+                <h1 class="intro-title">
+                    Nutrição que Inspira,<br>
+                    Sabor que <em>Transforma</em>.
+                </h1>
+
+                <p class="intro-subtitle">
+                    Marmitas gourmet preparadas artesanalmente com ingredientes nobres, 
+                    macronutrientes equilibrados e a conveniência que a sua rotina exige.
+                </p>
+
+                <button class="intro-action-btn" id="scrollToCarouselBtn">
+                    <span>Explorar Marmitas</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <polyline points="19 12 12 19 5 12"></polyline>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div class="scroll-hint-bar" id="scrollHint">
+                <div class="scroll-hint-icon"></div>
+                <span>Scroll para descobrir</span>
+            </div>
+        </div>
+
+        <!-- ================================================================
+             DIV 2: CARROSSEL DAS MARMITAS (ANIMAÇÃO CIRCULAR 3D COM ONCLICK)
+             ================================================================ -->
+        <div class="section-carousel" id="carouselSection">
+            <!-- Top brand stamp inspired by Agrumea -->
+            <div class="carousel-top-brand" id="carouselTopBrand">
+                <img src="assets/images/logo-rayfit.png" alt="RayFit" class="carousel-top-logo">
+                <span class="carousel-top-title">RayFit Gourmet</span>
+            </div>
+
+            <!-- Curved Canvas & Rotating Circular Ring Background -->
+            <div class="bg-curved-canvas" id="bgCurvedCanvas">
+                <div class="curved-text-ring">
+                    <svg class="curved-text-svg" viewBox="0 0 1000 1000">
+                        <defs>
+                            <path id="circlePath" d="M 500, 500 m -380, 0 a 380,380 0 1,1 760,0 a 380,380 0 1,1 -760,0"/>
+                        </defs>
+                        <text>
+                            <textPath href="#circlePath" startOffset="0%">
+                                RAYFIT MARMITAS • FRESH & ORGANIC • GOURMET MEALS • NUTRITION 2026 •
+                            </textPath>
+                        </text>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- OnClick Navigation Arrow Left -->
+            <button class="nav-arrow-btn prev" id="prevBtn" aria-label="Marmita Anterior" title="Anterior">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+
+            <!-- 3D Orbit Stage for Circular Animation -->
+            <div class="carousel-stage">
+                <div class="orbit-track" id="orbitTrack">
+                    <!-- Dynamic 3D Marmitas will be placed here via JavaScript -->
+                </div>
+            </div>
+
+            <!-- OnClick Navigation Arrow Right -->
+            <button class="nav-arrow-btn next" id="nextBtn" aria-label="Próxima Marmita" title="Próxima">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+
+            <!-- Active Product Info (Bottom Left) -->
+            <div class="active-product-info" id="activeProductInfo">
+                <span class="info-tag" id="infoTag">Best Seller</span>
+                <h2 class="info-title" id="infoTitle">Frango Fit Gourmet</h2>
+                <p class="info-desc" id="infoDesc">Ervas Finas & Batata Doce</p>
+                <div class="info-meta">
+                    <span class="info-price" id="infoPrice">R$ 24,90</span>
+                    <span class="info-cal" id="infoCal">380 kcal</span>
+                </div>
+            </div>
+
+            <!-- Bottom Navigation Bar & Circular Pagination -->
+            <div class="carousel-bottom-bar">
+                <div class="circular-pagination" id="paginationDots">
+                    <!-- Pagination dots generated via JS -->
+                </div>
+                <div class="scroll-to-discover-label">
+                    <span>Clique ou Scroll para Girar</span>
+                    <span class="arrow">→</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ====================================================================
+         PRODUCT DETAIL MODAL ("DISCOVER THE PRODUCT")
+         ==================================================================== -->
+    <div class="product-modal" id="productModal">
+        <div class="modal-card">
+            <button class="modal-close" id="modalClose" aria-label="Fechar">&times;</button>
+            <div class="modal-content-flex">
+                <span class="modal-header-tag" id="modalTag">Detalhes da Marmita</span>
+                <h3 class="modal-title" id="modalTitle">Nome do Prato</h3>
+                <p class="modal-desc" id="modalDesc">Descrição detalhada com os ingredientes e modo de preparo.</p>
+                
+                <div class="modal-nutri-grid">
+                    <div class="nutri-box">
+                        <div class="num" id="modalKcal">380</div>
+                        <div class="lbl">Calorias</div>
+                    </div>
+                    <div class="nutri-box">
+                        <div class="num" id="modalProt">42g</div>
+                        <div class="lbl">Proteínas</div>
+                    </div>
+                    <div class="nutri-box">
+                        <div class="num" id="modalCarb">35g</div>
+                        <div class="lbl">Carboidratos</div>
+                    </div>
+                </div>
+
+                <a href="#" target="_blank" class="modal-buy-btn" id="modalBuyBtn">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    </svg>
+                    <span>Pedir pelo WhatsApp</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- External JavaScript -->
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
