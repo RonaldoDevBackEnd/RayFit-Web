@@ -151,26 +151,27 @@ document.addEventListener('DOMContentLoaded', () => {
         if (assemblyStatusText) assemblyStatusText.textContent = 'Preparando a sua marmita...';
 
         introInterval = setInterval(() => {
-            progress += 4;
+            progress += 2;
             if (progress > 100) progress = 100;
             if (assemblyProgress) assemblyProgress.style.width = `${progress}%`;
 
             if (progress === 24 && assemblyStatusText) {
-                assemblyStatusText.textContent = 'Ingredientes frescos...';
-            } else if (progress === 52 && assemblyStatusText) {
-                assemblyStatusText.textContent = 'Grelhado com ervas nobres...';
-            } else if (progress >= 68 && !splashAssemblyStage.classList.contains('logo-shown')) {
-                if (assemblyStatusText) assemblyStatusText.textContent = 'Nutrição & alta performance...';
+                assemblyStatusText.textContent = 'Adicionando ingredientes orgânicos frescos...';
+            } else if (progress === 54 && assemblyStatusText) {
+                assemblyStatusText.textContent = 'Grelhando e finalizando com temperos nobres...';
+            } else if (progress === 78 && assemblyStatusText) {
+                assemblyStatusText.textContent = 'Harmonizando sabor & alta performance...';
+            } else if (progress >= 88 && !splashAssemblyStage.classList.contains('logo-shown')) {
                 splashAssemblyStage.classList.add('logo-shown');
             } else if (progress >= 100) {
                 clearInterval(introInterval);
-                if (assemblyStatusText) assemblyStatusText.textContent = 'Pronto! Bem-vindo.';
+                if (assemblyStatusText) assemblyStatusText.textContent = 'Pronto! Bem-vindo à RayFit.';
 
                 setTimeout(() => {
                     introSplashScreen.classList.add('revealed');
-                }, 280);
+                }, 480);
             }
-        }, 28);
+        }, 38);
     }
 
     // Inicia a animação da marmita e da logo automaticamente de primeira ao acessar o site
