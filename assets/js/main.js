@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
             protein: "42g",
             carb: "35g",
             fat: "6g",
-            image: "assets/images/marmitas/marmita-1.png",
+            image: "assets/images/marmitas/marmita-1.webp",
             circleBg: "radial-gradient(circle at 40% 40%, #9e3625 0%, #7d2417 60%, #5a190f 100%)",
             circleShadow: "0 40px 90px rgba(125, 36, 23, 0.35)",
             accentColor: "#f57c00"
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             protein: "38g",
             carb: "28g",
             fat: "14g",
-            image: "assets/images/marmitas/marmita-2.png",
+            image: "assets/images/marmitas/marmita-2.webp",
             circleBg: "radial-gradient(circle at 40% 40%, #a4482c 0%, #822f18 60%, #5c1b09 100%)",
             circleShadow: "0 40px 90px rgba(164, 72, 44, 0.35)",
             accentColor: "#eb5a41"
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
             protein: "48g",
             carb: "38g",
             fat: "8g",
-            image: "assets/images/marmitas/marmita-3.png",
+            image: "assets/images/marmitas/marmita-3.webp",
             circleBg: "radial-gradient(circle at 40% 40%, #5a2c20 0%, #401d15 60%, #290f09 100%)",
             circleShadow: "0 40px 90px rgba(90, 44, 32, 0.35)",
             accentColor: "#b43c2d"
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
             protein: "19g",
             carb: "42g",
             fat: "11g",
-            image: "assets/images/marmitas/marmita-4.png",
+            image: "assets/images/marmitas/marmita-4.webp",
             circleBg: "radial-gradient(circle at 40% 40%, #20542c 0%, #163d1f 60%, #0d2613 100%)",
             circleShadow: "0 40px 90px rgba(32, 84, 44, 0.35)",
             accentColor: "#2d8a3e"
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
             protein: "36g",
             carb: "40g",
             fat: "9g",
-            image: "assets/images/marmitas/marmita-5.png",
+            image: "assets/images/marmitas/marmita-5.webp",
             circleBg: "radial-gradient(circle at 40% 40%, #9e6f1a 0%, #7d5410 60%, #543708 100%)",
             circleShadow: "0 40px 90px rgba(158, 111, 26, 0.35)",
             accentColor: "#e19b14"
@@ -151,26 +151,26 @@ document.addEventListener('DOMContentLoaded', () => {
         if (assemblyStatusText) assemblyStatusText.textContent = 'Preparando a sua marmita...';
 
         introInterval = setInterval(() => {
-            progress += 3;
+            progress += 4;
             if (progress > 100) progress = 100;
             if (assemblyProgress) assemblyProgress.style.width = `${progress}%`;
 
             if (progress === 24 && assemblyStatusText) {
-                assemblyStatusText.textContent = 'Adicionando ingredientes orgânicos frescos...';
-            } else if (progress === 54 && assemblyStatusText) {
-                assemblyStatusText.textContent = 'Grelhando e finalizando com temperos nobres...';
-            } else if (progress === 78) {
-                if (assemblyStatusText) assemblyStatusText.textContent = 'Harmonizando sabor & alta performance...';
+                assemblyStatusText.textContent = 'Ingredientes frescos...';
+            } else if (progress === 52 && assemblyStatusText) {
+                assemblyStatusText.textContent = 'Grelhado com ervas nobres...';
+            } else if (progress >= 68 && !splashAssemblyStage.classList.contains('logo-shown')) {
+                if (assemblyStatusText) assemblyStatusText.textContent = 'Nutrição & alta performance...';
                 splashAssemblyStage.classList.add('logo-shown');
             } else if (progress >= 100) {
                 clearInterval(introInterval);
-                if (assemblyStatusText) assemblyStatusText.textContent = 'Pronto! Bem-vindo à RayFit.';
+                if (assemblyStatusText) assemblyStatusText.textContent = 'Pronto! Bem-vindo.';
 
                 setTimeout(() => {
                     introSplashScreen.classList.add('revealed');
-                }, 600);
+                }, 280);
             }
-        }, 55);
+        }, 28);
     }
 
     // Inicia a animação da marmita e da logo automaticamente de primeira ao acessar o site

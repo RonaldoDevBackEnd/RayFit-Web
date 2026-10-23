@@ -2,7 +2,7 @@
    RAYFIT - WEBSITES 2026 CIRCULAR 3D CAROUSEL EXPERIENCE
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap');
+/* Fonts loaded non-blocking in HTML <head> for maximum mobile performance */
 
 :root {
     --primary-green: #1a5c2a;
@@ -1419,5 +1419,30 @@ html, body {
     .btn-enter-experience {
         padding: 14px 28px;
         font-size: 0.95rem;
+    }
+}
+
+
+/* GPU & Battery Optimization for Mobile */
+@media (max-width: 768px) {
+    .splash-glow-green,
+    .splash-glow-orange,
+    .intro-ambient-glow {
+        filter: blur(35px) !important;
+        opacity: 0.5 !important;
+        animation: none !important; /* Salva ciclos de GPU e bateria no mobile */
+    }
+
+    .logo-organic-backdrop {
+        filter: blur(18px) !important;
+        animation: none !important;
+    }
+
+    .logo-organic-img {
+        animation-duration: 6s !important;
+    }
+
+    .curved-text-ring {
+        animation-duration: 60s !important;
     }
 }
