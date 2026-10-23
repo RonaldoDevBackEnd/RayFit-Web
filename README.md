@@ -29,8 +29,7 @@ Inspirada nas mais modernas tendências de web design de 2026 (design espacial, 
 ## ✨ Principais Funcionalidades
 
 - **Splash Intro Cinematográfica (A Marmita da Logo Se Formando)**:
-  - Ao entrar pela primeira vez, uma tela de boas-vindas minimalista convida o cliente a acessar a experiência.
-  - Ao clicar, a **marmita oficial da RayFit** se monta peça por peça em animação vetorial com iluminação difusa:
+  - Ao acessar o site, a **marmita oficial da RayFit** inicia sua montagem imediatamente de primeira em animação vetorial fluida com iluminação difusa:
     - *Tigela verde isométrica*, *folhas verdes frescas*, *tomate*, *filé grelhado com listras tostadas*, *garfo laranja dinâmico*, *arcos de energia em espiral* e *revelação do lettering RayFit com feixe de luz*.
   - Abertura suave em dissolução cinematográfica para o site principal.
   - Botão flutuante permanente para rever a introdução a qualquer momento.

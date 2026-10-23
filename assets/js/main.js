@@ -123,63 +123,66 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Splash Intro Elements
     const introSplashScreen = document.getElementById('introSplashScreen');
-    const splashPromptBox = document.getElementById('splashPromptBox');
-    const btnEnterExperience = document.getElementById('btnEnterExperience');
     const splashAssemblyStage = document.getElementById('splashAssemblyStage');
     const assemblyProgress = document.getElementById('assemblyProgress');
     const assemblyStatusText = document.getElementById('assemblyStatusText');
     const btnReplayIntro = document.getElementById('btnReplayIntro');
 
     // =========================================================================
-    // 2. SPLASH INTRO CINEMATOGRÁFICA (A MARMITA DA LOGO SE FORMANDO)
+    // 2. SPLASH INTRO CINEMATOGRÁFICA (RODA DIRETO DE PRIMEIRA AO ENTRAR)
     // =========================================================================
+    let introInterval = null;
+
     function runAssemblyAnimation() {
-        // Switch to assembly stage
-        splashPromptBox.classList.add('hidden-step');
+        if (!introSplashScreen || !splashAssemblyStage) return;
+
+        if (introInterval) clearInterval(introInterval);
+
+        // Prepara o palco de animação imediato
+        introSplashScreen.classList.remove('revealed');
+        splashAssemblyStage.classList.remove('logo-shown', 'animating');
+        
+        // Força reflow para reiniciar keyframes CSS perfeitamente
+        void splashAssemblyStage.offsetWidth;
         splashAssemblyStage.classList.add('active-step', 'animating');
-        splashAssemblyStage.classList.remove('logo-shown');
 
         let progress = 0;
-        assemblyProgress.style.width = '0%';
-        assemblyStatusText.textContent = 'Preparando a sua marmita...';
+        if (assemblyProgress) assemblyProgress.style.width = '0%';
+        if (assemblyStatusText) assemblyStatusText.textContent = 'Preparando a sua marmita...';
 
-        const interval = setInterval(() => {
+        introInterval = setInterval(() => {
             progress += 3;
             if (progress > 100) progress = 100;
-            assemblyProgress.style.width = `${progress}%`;
+            if (assemblyProgress) assemblyProgress.style.width = `${progress}%`;
 
-            if (progress === 24) {
+            if (progress === 24 && assemblyStatusText) {
                 assemblyStatusText.textContent = 'Adicionando ingredientes orgânicos frescos...';
-            } else if (progress === 54) {
+            } else if (progress === 54 && assemblyStatusText) {
                 assemblyStatusText.textContent = 'Grelhando e finalizando com temperos nobres...';
             } else if (progress === 78) {
-                assemblyStatusText.textContent = 'Harmonizando sabor & alta performance...';
+                if (assemblyStatusText) assemblyStatusText.textContent = 'Harmonizando sabor & alta performance...';
                 splashAssemblyStage.classList.add('logo-shown');
             } else if (progress >= 100) {
-                clearInterval(interval);
-                assemblyStatusText.textContent = 'Pronto! Bem-vindo à RayFit.';
+                clearInterval(introInterval);
+                if (assemblyStatusText) assemblyStatusText.textContent = 'Pronto! Bem-vindo à RayFit.';
 
                 setTimeout(() => {
                     introSplashScreen.classList.add('revealed');
-                    sessionStorage.setItem('rayfit_intro_seen', 'true');
-                }, 700);
+                }, 600);
             }
-        }, 65);
+        }, 55);
     }
 
-    if (btnEnterExperience) {
-        btnEnterExperience.addEventListener('click', runAssemblyAnimation);
-    }
+    // Inicia a animação da marmita e da logo automaticamente de primeira ao acessar o site
+    setTimeout(() => {
+        runAssemblyAnimation();
+    }, 120);
 
-    // Replay button to allow testing anytime
+    // Botão flutuante para rever a intro a qualquer momento
     if (btnReplayIntro) {
         btnReplayIntro.addEventListener('click', () => {
-            introSplashScreen.classList.remove('revealed');
-            splashPromptBox.classList.remove('hidden-step');
-            splashAssemblyStage.classList.remove('active-step', 'animating', 'logo-shown');
-            assemblyProgress.style.width = '0%';
-            assemblyStatusText.textContent = 'Pronto para iniciar.';
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            runAssemblyAnimation();
         });
     }
 
