@@ -796,72 +796,628 @@ html, body {
     box-shadow: 0 14px 30px rgba(37, 211, 102, 0.45);
 }
 
+
 /* ==========================================================================
-   RESPONSIVE
+   SPLASH INTRO CINEMATOGRÁFICA (A MARMITA DA LOGO SE FORMANDO)
    ========================================================================== */
-@media (max-width: 992px) {
+.intro-splash-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: radial-gradient(circle at 50% 45%, #0e2b17 0%, #07190c 55%, #020804 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1), 
+                visibility 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    transform: scale(1);
+    will-change: opacity, transform, visibility;
+}
+
+.intro-splash-screen.revealed {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.08);
+    pointer-events: none;
+}
+
+/* Splash Glow Ambient Orbs */
+.splash-glow-green {
+    position: absolute;
+    width: clamp(350px, 60vw, 750px);
+    height: clamp(350px, 60vw, 750px);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(46, 125, 50, 0.28) 0%, transparent 70%);
+    filter: blur(80px);
+    top: 30%;
+    left: 45%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    animation: splashGlowPulse 6s ease-in-out infinite alternate;
+}
+
+.splash-glow-orange {
+    position: absolute;
+    width: clamp(300px, 50vw, 650px);
+    height: clamp(300px, 50vw, 650px);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(245, 124, 0, 0.22) 0%, transparent 70%);
+    filter: blur(80px);
+    bottom: 25%;
+    right: 35%;
+    pointer-events: none;
+    animation: splashGlowPulse 7s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes splashGlowPulse {
+    0% { transform: scale(0.85) translate(-5%, -5%); opacity: 0.6; }
+    100% { transform: scale(1.15) translate(5%, 5%); opacity: 1; }
+}
+
+/* Passo 1: Prompt Inicial ("Clique para Entrar") */
+.splash-prompt-box {
+    position: relative;
+    z-index: 10;
+    max-width: 540px;
+    padding: 30px 24px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.splash-prompt-box.hidden-step {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+    pointer-events: none;
+    position: absolute;
+}
+
+.splash-logo-mini {
+    position: relative;
+    width: 90px;
+    margin-bottom: 20px;
+}
+
+.mini-logo-pulse {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 10px 25px rgba(46, 125, 50, 0.4));
+    animation: logoMiniPulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes logoMiniPulse {
+    0% { transform: scale(0.96) translateY(0); }
+    100% { transform: scale(1.04) translateY(-4px); }
+}
+
+.splash-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #e5a458;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 30px;
+    margin-bottom: 18px;
+}
+
+.splash-prompt-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1.15;
+    margin-bottom: 12px;
+}
+
+.splash-prompt-subtitle {
+    font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.btn-enter-experience {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    background: linear-gradient(135deg, var(--primary-green) 0%, #0d461c 50%, var(--primary-orange) 100%);
+    background-size: 200% 200%;
+    color: #ffffff;
+    padding: 16px 42px;
+    border-radius: 50px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    box-shadow: 0 16px 40px rgba(46, 125, 50, 0.45);
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    animation: gradientShift 5s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.btn-enter-experience:hover {
+    transform: scale(1.06) translateY(-2px);
+    box-shadow: 0 22px 50px rgba(245, 124, 0, 0.55);
+}
+
+.btn-enter-experience:active {
+    transform: scale(0.98);
+}
+
+.btn-enter-experience .btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+.btn-enter-experience:hover .btn-icon {
+    transform: translateX(4px);
+    background: rgba(255, 255, 255, 0.35);
+}
+
+/* Passo 2: A Marmita da Logo Se Formando */
+.splash-assembly-stage {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.9);
+    pointer-events: none;
+    transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.splash-assembly-stage.active-step {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+
+.assembly-canvas-wrap {
+    position: relative;
+    width: clamp(280px, 80vw, 480px);
+    height: clamp(240px, 65vw, 360px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.assembly-svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+/* Animações Peça por Peça do SVG da Marmita */
+.anim-part {
+    opacity: 0;
+    transform-origin: center;
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 1. Arcos Dinâmicos */
+.part-arcs {
+    opacity: 1;
+}
+
+.arc-path {
+    stroke-dasharray: 450;
+    stroke-dashoffset: 450;
+    transition: stroke-dashoffset 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.splash-assembly-stage.animating .arc-green {
+    stroke-dashoffset: 0;
+    transition-delay: 0.1s;
+}
+
+.splash-assembly-stage.animating .arc-orange {
+    stroke-dashoffset: 0;
+    transition-delay: 0.4s;
+}
+
+/* 2. Tigela / Marmita */
+.splash-assembly-stage.animating .part-bowl {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    animation: bowlBounce 0.75s 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes bowlBounce {
+    0% { opacity: 0; transform: translateY(40px) scale(0.6) rotate(-4deg); }
+    70% { opacity: 1; transform: translateY(-8px) scale(1.05) rotate(1deg); }
+    100% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+}
+
+/* 3. Folhas Verdes */
+.splash-assembly-stage.animating .part-leaves {
+    animation: leafSprout 0.65s 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes leafSprout {
+    0% { opacity: 0; transform: scale(0.2) translate(-30px, 30px); }
+    100% { opacity: 1; transform: scale(1) translate(0, 0); }
+}
+
+/* 4. Tomate */
+.splash-assembly-stage.animating .part-tomato {
+    animation: tomatoDrop 0.6s 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes tomatoDrop {
+    0% { opacity: 0; transform: translateY(-50px) scale(0.4); }
+    70% { opacity: 1; transform: translateY(6px) scale(1.15); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* 5. Grelhado */
+.splash-assembly-stage.animating .part-grill {
+    animation: grillSizzle 0.65s 1.1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes grillSizzle {
+    0% { opacity: 0; transform: scale(0.5) translateY(-25px); }
+    75% { opacity: 1; transform: scale(1.08) translateY(-2px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* 6. Garfo Laranja */
+.splash-assembly-stage.animating .part-fork {
+    animation: forkStab 0.7s 1.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes forkStab {
+    0% { opacity: 0; transform: translate(50px, -60px) rotate(45deg); }
+    70% { opacity: 1; transform: translate(-4px, 4px) rotate(14deg); }
+    100% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+}
+
+/* 7. Faíscas e Partículas */
+.splash-assembly-stage.animating .part-sparkles {
+    animation: sparklesPop 0.8s 1.7s ease forwards;
+}
+
+@keyframes sparklesPop {
+    0% { opacity: 0; transform: scale(0.2); }
+    50% { opacity: 1; transform: scale(1.2); }
+    100% { opacity: 0.8; transform: scale(1); }
+}
+
+/* 8. Revelação do Lettering e Logo Completa */
+.assembly-logo-reveal {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+}
+
+.splash-assembly-stage.logo-shown .assembly-logo-reveal {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.splash-assembly-stage.logo-shown .assembly-svg {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.assembly-final-logo {
+    width: 85%;
+    height: auto;
+    filter: drop-shadow(0 15px 35px rgba(245, 124, 0, 0.45));
+}
+
+.assembly-light-streak {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    transform: skewX(-25deg);
+    pointer-events: none;
+}
+
+.splash-assembly-stage.logo-shown .assembly-light-streak {
+    animation: lightStreak 0.8s 0.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes lightStreak {
+    0% { left: -100%; }
+    100% { left: 200%; }
+}
+
+/* Barra de Status e Progresso */
+.assembly-status-bar {
+    width: 100%;
+    max-width: 320px;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.assembly-status-line {
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.assembly-status-progress {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-green), var(--primary-orange));
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.assembly-status-text {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 1px;
+}
+
+/* Botão Flutuante para Rever a Intro */
+.btn-replay-intro {
+    position: fixed;
+    top: 22px;
+    right: 24px;
+    z-index: 1000;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    color: #1a4223;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.btn-replay-intro:hover {
+    background: #ffffff;
+    color: var(--primary-orange);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
+}
+
+.btn-replay-intro svg {
+    color: var(--primary-orange);
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE UNIVERSAL & DINÂMICA DE TOUCH EM DISPOSITIVOS
+   ========================================================================== */
+
+/* Suporte de Altura Dinâmica para Mobile (evita cortes na barra de endereços) */
+.section-intro,
+.section-carousel {
+    min-height: 100vh;
+    min-height: 100dvh;
+    height: 100dvh;
+}
+
+/* Touch responsiveness optimization */
+.carousel-stage {
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.marmita-item {
+    touch-action: pan-y;
+}
+
+/* TABLETS & TELAS MÉDIAS (<= 1024px) */
+@media (max-width: 1024px) {
+    .bg-curved-canvas {
+        width: clamp(650px, 90vw, 1000px);
+        height: clamp(650px, 90vw, 1000px);
+        transform: translate(-50%, -12%) rotate(-8deg);
+    }
+
     .active-product-info {
-        left: 30px;
-        bottom: 25px;
-        max-width: 300px;
+        left: 36px;
+        bottom: 28px;
+        max-width: 320px;
     }
 
     .carousel-bottom-bar {
-        right: 30px;
-        bottom: 25px;
-    }
-
-    .nav-arrow-btn.prev {
-        left: 15px;
-    }
-
-    .nav-arrow-btn.next {
-        right: 15px;
-    }
-
-    .bg-curved-canvas {
-        transform: translate(-50%, -10%) rotate(-10deg);
+        right: 36px;
+        bottom: 28px;
     }
 }
 
-@media (max-width: 680px) {
-    .section-intro {
-        padding: 40px 18px;
+/* SMARTPHONES & TELAS PEQUENAS (<= 768px) */
+@media (max-width: 768px) {
+    .btn-replay-intro {
+        top: 15px;
+        right: 15px;
+        padding: 6px 12px;
+        font-size: 0.7rem;
     }
 
-    .active-product-info {
-        position: static;
-        margin-top: 20px;
-        text-align: center;
-        max-width: 90%;
+    .carousel-top-brand {
+        top: 18px;
+    }
+
+    .carousel-top-logo {
+        width: 58px;
+    }
+
+    .carousel-top-title {
+        font-size: 0.8rem;
+        letter-spacing: 2px;
     }
 
     .section-carousel {
-        height: auto;
-        min-height: 100vh;
-        padding-top: 80px;
-        padding-bottom: 80px;
+        padding: 60px 14px 20px 14px;
+        display: flex;
         flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .carousel-stage {
-        height: 52vh;
-        min-height: 380px;
+        height: 48vh;
+        min-height: 340px;
+        max-height: 440px;
+        width: 100%;
+    }
+
+    .marmita-item {
+        width: clamp(220px, 66vw, 300px);
+        height: clamp(320px, 46vh, 420px);
+    }
+
+    .discover-badge {
+        bottom: 12%;
+        padding: 8px 18px;
+        font-size: 0.72rem;
+        letter-spacing: 1.5px;
+    }
+
+    .active-product-info {
+        position: relative;
+        left: 0;
+        bottom: 0;
+        text-align: center;
+        max-width: 90%;
+        margin-top: -10px;
+        z-index: 10;
+    }
+
+    .info-title {
+        font-size: 1.5rem;
+    }
+
+    .info-desc {
+        font-size: 0.85rem;
+        margin-bottom: 8px;
+    }
+
+    .info-meta {
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .info-price {
+        font-size: 1.3rem;
     }
 
     .carousel-bottom-bar {
-        position: static;
-        margin-top: 25px;
+        position: relative;
+        right: 0;
+        bottom: 0;
+        margin-top: 10px;
         justify-content: center;
     }
 
     .scroll-to-discover-label {
-        display: none;
+        font-size: 0.7rem;
     }
 
+    /* Setas acessíveis no mobile */
     .nav-arrow-btn {
-        width: 48px;
-        height: 48px;
+        width: 44px;
+        height: 44px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .nav-arrow-btn.prev {
+        left: 10px;
+    }
+
+    .nav-arrow-btn.next {
+        right: 10px;
+    }
+
+    .nav-arrow-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* Modal estilo Bottom Sheet no Mobile */
+    .product-modal {
+        align-items: flex-end;
+        padding: 0;
+    }
+
+    .modal-card {
+        border-radius: 28px 28px 0 0;
+        max-width: 100%;
+        padding: 28px 20px 32px 20px;
+        max-height: 85vh;
+        overflow-y: auto;
+    }
+
+    .modal-title {
+        font-size: 1.7rem;
     }
 }
 
+/* SMARTPHONES COMPACTOS (<= 420px) */
+@media (max-width: 420px) {
+    .logo-organic-img {
+        width: clamp(260px, 86vw, 360px);
+    }
+
+    .carousel-stage {
+        height: 44vh;
+        min-height: 310px;
+    }
+
+    .marmita-item {
+        width: 210px;
+        height: 310px;
+    }
+
+    .nav-arrow-btn {
+        display: none; /* No mobile ultra-compacto, a navegação é 100% por swipe no touch */
+    }
+
+    .splash-prompt-title {
+        font-size: 1.6rem;
+    }
+
+    .btn-enter-experience {
+        padding: 14px 28px;
+        font-size: 0.95rem;
+    }
+}

@@ -12,6 +12,7 @@
     <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3" />
     <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript" />
     <img src="https://img.shields.io/badge/Design_Trend-2026_Spatial-green?style=for-the-badge" alt="Trend 2026" />
+    <img src="https://img.shields.io/badge/Mobile-Universal_Touch-orange?style=for-the-badge" alt="Mobile Touch" />
   </p>
 </div>
 
@@ -21,31 +22,41 @@
 
 Esta aplicação web foi meticulosamente projetada e desenvolvida para um cliente corporativo do segmento de alimentação saudável e fitness, tendo como propósito central **apresentar o catálogo de produtos da RayFit de maneira extremamente elegante, limpa e tecnológica**.
 
-Inspirada nas mais modernas tendências de web design de 2026 (design espacial, profundidade 3D em perspectiva e microinterações táteis), a página abandona layouts tradicionais com sobrecarga de informações e foca em uma experiência fluida de apenas **duas seções principais**: uma introdução visualmente memorável e uma vitrine circular tridimensional interativa.
+Inspirada nas mais modernas tendências de web design de 2026 (design espacial, profundidade 3D em perspectiva e microinterações táteis), a página abandona layouts tradicionais com sobrecarga de informações e foca em uma experiência fluida de apenas **duas seções principais** com transição contínua em degradê aveludado e uma **splash screen introdutória cinematográfica**.
 
 ---
 
 ## ✨ Principais Funcionalidades
+
+- **Splash Intro Cinematográfica (A Marmita da Logo Se Formando)**:
+  - Ao entrar pela primeira vez, uma tela de boas-vindas minimalista convida o cliente a acessar a experiência.
+  - Ao clicar, a **marmita oficial da RayFit** se monta peça por peça em animação vetorial com iluminação difusa:
+    - *Tigela verde isométrica*, *folhas verdes frescas*, *tomate*, *filé grelhado com listras tostadas*, *garfo laranja dinâmico*, *arcos de energia em espiral* e *revelação do lettering RayFit com feixe de luz*.
+  - Abertura suave em dissolução cinematográfica para o site principal.
+  - Botão flutuante permanente para rever a introdução a qualquer momento.
 
 - **Vitrine em Órbita 3D Circular (Agrumea Concept)**:
   - Carrossel cilíndrico tridimensional com cálculo trigonométrico em tempo real.
   - Cada marmita orbita em perspectiva `preserve-3d`, simulando profundidade e reflexo realistas.
   - O disco curvo ao fundo e o anel tipográfico rotativo adaptam suas cores dinamicamente conforme o produto ativo.
 
-- **Navegação Multicanal Fluida**:
+- **Navegação Multicanal & Dinâmica de Touch em Dispositivos Móveis**:
+  - **Física de Touch em Tempo Real**: no celular e tablet, o carrossel responde instantaneamente ao movimento do polegar durante o arraste (`touchmove`), aplicando rotação e inércia realistas.
   - **Clique Direto (`onclick`)**: clique nas marmitas laterais para girar o carrossel na direção desejada.
   - **Scroll do Mouse (`wheel`)**: navegação contínua através do scroll do mouse com controle de inércia.
   - **Controles de Seta e Paginação**: botões circulares em vidro fosco (*glassmorphism*) e teclado (setas esquerda/direita).
-  - **Gestos Touch / Swipe**: suporte nativo a dispositivos móveis e tablets.
 
-- **Logo Orgânica & Reativa**:
-  - Imagem transparente recortada com precisão anti-aliased.
+- **Logo Orgânica, Centralizada & Reativa**:
+  - Imagem transparente recortada com precisão anti-aliased, em grande escala e total evidência.
   - Aura luminosa pulsante e flutuação contínua (`organicFloat`).
-  - Efeito Parallax / Tilt 3D baseado na posição do cursor do mouse.
+  - Efeito Parallax / Tilt 3D reativo baseado na posição do cursor do mouse.
+
+- **Transição Aveludada em Degradê**:
+  - Transição de cores fluida entre a Div 1 e a Div 2, eliminando qualquer linha dura ou corte seco entre as telas.
 
 - **Microinterações & Conversão Direta**:
   - Botão interativo *"Descobrir o Produto"* na marmita ativa com ponto luminoso pulsante.
-  - Modal dinâmico exibindo tabela nutricional completa (Kcal, Proteínas, Carboidratos) e botão de pedido direto via **WhatsApp** com mensagem pré-formatada.
+  - Modal dinâmico (com adaptação para *bottom sheet* no mobile) exibindo tabela nutricional completa e botão de pedido direto via **WhatsApp** com mensagem pré-formatada.
 
 ---
 
@@ -55,12 +66,13 @@ Inspirada nas mais modernas tendências de web design de 2026 (design espacial, 
 - **CSS3 Moderno**: 
   - CSS Custom Properties (Variáveis temáticas).
   - Espaço tridimensional com `perspective`, `transform-style: preserve-3d` e aceleração por GPU.
+  - Unidades `dvh` e `svh` para evitar que barras de navegação mobile cortem o conteúdo.
   - Efeitos de *glassmorphism* com `backdrop-filter`.
-  - Design totalmente responsivo para mobile, tablet e desktop.
+  - Design 100% responsivo para Mobile compacto, Smartphones, Tablets, Laptops e Desktops 4K.
 - **JavaScript Vanilla (ES6+)**:
   - Zero dependências ou frameworks pesados.
   - Rotação cilíndrica com wrapping circular contínuo.
-  - Interação com eventos de Mouse, Wheel, Touch e Teclado.
+  - Detecção de gestos de toque com cálculo dinâmico de offset e inércia.
 
 ---
 
@@ -70,7 +82,7 @@ Inspirada nas mais modernas tendências de web design de 2026 (design espacial, 
 RayFit/
 ├── assets/
 │   ├── css/
-│   │   └── style.css              # Folha de estilos externa e modular
+│   │   └── style.css              # Folha de estilos externa com regras responsivas e splash intro
 │   ├── images/
 │   │   ├── logo-rayfit.png        # Logo transparente recortada e otimizada
 │   │   ├── logo-rayfit.jpg        # Imagem original de referência
@@ -81,7 +93,7 @@ RayFit/
 │   │       ├── marmita-4.png
 │   │       └── marmita-5.png
 │   └── js/
-│       └── main.js                # Lógica do carrossel 3D e interações
+│       └── main.js                # Lógica da intro, carrossel 3D e física touch
 ├── index.html                     # Estrutura principal da página
 ├── generate_assets.py             # Script de processamento gráfico de assets
 └── README.md                      # Documentação oficial do projeto
@@ -124,4 +136,3 @@ Projeto concebido e desenvolvido por:
 <div align="center">
   <sub>Desenvolvido com excelência visual, foco em alta conversão e inovação. © 2026 RayFit.</sub>
 </div>
-
