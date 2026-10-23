@@ -430,6 +430,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (scrollToCarouselBtn) scrollToCarouselBtn.addEventListener('click', scrollToCarousel);
     if (scrollHint) scrollHint.addEventListener('click', scrollToCarousel);
+    if (logoContainer) logoContainer.addEventListener('click', scrollToCarousel);
 
     // INITIAL RENDER
     updateCarousel(true);
