@@ -1,11 +1,11 @@
 /**
- * RAYFIT - 2026 EXPERIMENTAL CIRCULAR 3D CAROUSEL
- * Inspired by Agrumea Farm & Modern Spatial Web Design
+ * RAYFIT - 2026 EXPERIMENTAL CIRCULAR 3D CAROUSEL & CINEMATIC INTRO
+ * Universal Responsive Touch Experience
  */
 
 document.addEventListener('DOMContentLoaded', () => {
     // =========================================================================
-    // DATA SOURCE: 5 PREMIUM MARMITAS
+    // 1. DATA SOURCE: 5 PREMIUM MARMITAS
     // =========================================================================
     const marmitasData = [
         {
@@ -100,6 +100,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const paginationContainer = document.getElementById('paginationDots');
+    const carouselStage = document.getElementById('carouselStage');
+    const carouselSection = document.getElementById('carouselSection');
 
     // Info panel elements
     const infoTag = document.getElementById('infoTag');
@@ -119,8 +121,73 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalCarb = document.getElementById('modalCarb');
     const modalBuyBtn = document.getElementById('modalBuyBtn');
 
+    // Splash Intro Elements
+    const introSplashScreen = document.getElementById('introSplashScreen');
+    const splashAssemblyStage = document.getElementById('splashAssemblyStage');
+    const assemblyProgress = document.getElementById('assemblyProgress');
+    const assemblyStatusText = document.getElementById('assemblyStatusText');
+    const btnReplayIntro = document.getElementById('btnReplayIntro');
+
     // =========================================================================
-    // 1. RENDER MARMITAS INTO ORBIT TRACK
+    // 2. SPLASH INTRO CINEMATOGRÁFICA (RODA DIRETO DE PRIMEIRA AO ENTRAR)
+    // =========================================================================
+    let introInterval = null;
+
+    function runAssemblyAnimation() {
+        if (!introSplashScreen || !splashAssemblyStage) return;
+
+        if (introInterval) clearInterval(introInterval);
+
+        // Prepara o palco de animação imediato
+        introSplashScreen.classList.remove('revealed');
+        splashAssemblyStage.classList.remove('logo-shown', 'animating');
+        
+        // Força reflow para reiniciar keyframes CSS perfeitamente
+        void splashAssemblyStage.offsetWidth;
+        splashAssemblyStage.classList.add('active-step', 'animating');
+
+        let progress = 0;
+        if (assemblyProgress) assemblyProgress.style.width = '0%';
+        if (assemblyStatusText) assemblyStatusText.textContent = 'Preparando a sua marmita...';
+
+        introInterval = setInterval(() => {
+            progress += 3;
+            if (progress > 100) progress = 100;
+            if (assemblyProgress) assemblyProgress.style.width = `${progress}%`;
+
+            if (progress === 24 && assemblyStatusText) {
+                assemblyStatusText.textContent = 'Adicionando ingredientes orgânicos frescos...';
+            } else if (progress === 54 && assemblyStatusText) {
+                assemblyStatusText.textContent = 'Grelhando e finalizando com temperos nobres...';
+            } else if (progress === 78) {
+                if (assemblyStatusText) assemblyStatusText.textContent = 'Harmonizando sabor & alta performance...';
+                splashAssemblyStage.classList.add('logo-shown');
+            } else if (progress >= 100) {
+                clearInterval(introInterval);
+                if (assemblyStatusText) assemblyStatusText.textContent = 'Pronto! Bem-vindo à RayFit.';
+
+                setTimeout(() => {
+                    introSplashScreen.classList.add('revealed');
+                }, 600);
+            }
+        }, 55);
+    }
+
+    // Inicia a animação da marmita e da logo automaticamente de primeira ao acessar o site
+    setTimeout(() => {
+        runAssemblyAnimation();
+    }, 120);
+
+    // Botão flutuante para rever a intro a qualquer momento
+    if (btnReplayIntro) {
+        btnReplayIntro.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            runAssemblyAnimation();
+        });
+    }
+
+    // =========================================================================
+    // 3. RENDER MARMITAS INTO ORBIT TRACK
     // =========================================================================
     orbitTrack.innerHTML = '';
     marmitasData.forEach((item, index) => {
@@ -131,21 +198,19 @@ document.addEventListener('DOMContentLoaded', () => {
         marmitaEl.innerHTML = `
             <div class="marmita-img-wrapper">
                 <img src="${item.image}" alt="${item.title}" class="marmita-product-img" draggable="false">
-                <div class="discover-badge" title="Clique para ver detalhes">
+                <div class="discover-badge" title="Toque para ver a tabela nutricional">
                     <span class="pulse-point"></span>
                     <span>Descobrir o Produto</span>
                 </div>
             </div>
         `;
 
-        // ONCLICK EVENT ON THE MARMITA ITSELF
+        // ONCLICK / TOUCH ON MARMITA ITSELF
         marmitaEl.addEventListener('click', (e) => {
             const clickedIndex = parseInt(marmitaEl.dataset.index);
             if (clickedIndex === currentIndex) {
-                // If clicking active marmita or its discover button -> open modal
                 openProductModal(marmitasData[currentIndex]);
             } else {
-                // Circular transition to the clicked marmita
                 goToIndex(clickedIndex);
             }
         });
@@ -156,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const marmitaElements = document.querySelectorAll('.marmita-item');
 
     // =========================================================================
-    // 2. RENDER PAGINATION DOTS
+    // 4. RENDER PAGINATION DOTS
     // =========================================================================
     paginationContainer.innerHTML = '';
     marmitasData.forEach((_, idx) => {
@@ -170,17 +235,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const paginationDots = document.querySelectorAll('.pagination-dot');
 
     // =========================================================================
-    // 3. CIRCULAR 3D ORBIT CALCULATION FUNCTION
+    // 5. CIRCULAR 3D ORBIT CALCULATION (RESPONSIVO PARA PC, TABLET E CELULAR)
     // =========================================================================
     function updateCarousel(instant = false) {
-        const isMobile = window.innerWidth <= 768;
-        
+        const windowWidth = window.innerWidth;
+        const isMobile = windowWidth <= 768;
+        const isCompact = windowWidth <= 420;
+
         marmitaElements.forEach((el, index) => {
-            // Circular offset logic (-2, -1, 0, 1, 2)
             let diff = index - currentIndex;
 
-            // Normalize diff to wrap around circle:
-            // e.g. for total 5: from index 4 to 0 is +1, not -4
+            // Normalize circular diff (-2, -1, 0, 1, 2)
             if (diff > totalItems / 2) diff -= totalItems;
             if (diff < -totalItems / 2) diff += totalItems;
 
@@ -192,62 +257,63 @@ document.addEventListener('DOMContentLoaded', () => {
             let zIndex = 1;
             let filter = 'none';
 
-            const baseSpacing = isMobile ? 180 : 330;
-            const farSpacing = isMobile ? 280 : 540;
+            // Spacings adaptáveis por dispositivo
+            const baseSpacing = isCompact ? 160 : (isMobile ? 210 : 340);
+            const farSpacing = isCompact ? 250 : (isMobile ? 320 : 540);
 
             if (diff === 0) {
                 // ACTIVE IN FRONT CENTER
                 translateX = 0;
-                translateZ = isMobile ? 40 : 80;
+                translateZ = isMobile ? 35 : 80;
                 rotateY = 0;
                 scale = 1;
                 opacity = 1;
                 zIndex = 10;
                 el.classList.add('active');
             } else if (diff === 1) {
-                // IMMEDIATELY TO THE RIGHT (ANGLED INWARD)
+                // RIGHT (ANGLED INWARD)
                 translateX = baseSpacing;
-                translateZ = -140;
-                rotateY = -28;
-                scale = isMobile ? 0.75 : 0.82;
-                opacity = 0.72;
+                translateZ = isMobile ? -110 : -140;
+                rotateY = isMobile ? -22 : -28;
+                scale = isCompact ? 0.72 : (isMobile ? 0.76 : 0.82);
+                opacity = isMobile ? 0.65 : 0.72;
                 zIndex = 6;
                 filter = 'drop-shadow(0 15px 30px rgba(0,0,0,0.18))';
                 el.classList.remove('active');
             } else if (diff === -1) {
-                // IMMEDIATELY TO THE LEFT (ANGLED INWARD)
+                // LEFT (ANGLED INWARD)
                 translateX = -baseSpacing;
-                translateZ = -140;
-                rotateY = 28;
-                scale = isMobile ? 0.75 : 0.82;
-                opacity = 0.72;
+                translateZ = isMobile ? -110 : -140;
+                rotateY = isMobile ? 22 : 28;
+                scale = isCompact ? 0.72 : (isMobile ? 0.76 : 0.82);
+                opacity = isMobile ? 0.65 : 0.72;
                 zIndex = 6;
                 filter = 'drop-shadow(0 15px 30px rgba(0,0,0,0.18))';
                 el.classList.remove('active');
             } else if (diff === 2) {
-                // FAR RIGHT IN CIRCLE
+                // FAR RIGHT
                 translateX = farSpacing;
-                translateZ = -360;
-                rotateY = -48;
-                scale = 0.6;
-                opacity = 0.22;
+                translateZ = -340;
+                rotateY = -45;
+                scale = 0.55;
+                opacity = isMobile ? 0.15 : 0.22;
                 zIndex = 2;
                 el.classList.remove('active');
             } else if (diff === -2) {
-                // FAR LEFT IN CIRCLE
+                // FAR LEFT
                 translateX = -farSpacing;
-                translateZ = -360;
-                rotateY = 48;
-                scale = 0.6;
-                opacity = 0.22;
+                translateZ = -340;
+                rotateY = 45;
+                scale = 0.55;
+                opacity = isMobile ? 0.15 : 0.22;
                 zIndex = 2;
                 el.classList.remove('active');
             } else {
-                // BEHIND / HIDDEN IN REAR
+                // REAR
                 translateX = 0;
-                translateZ = -500;
+                translateZ = -480;
                 rotateY = 0;
-                scale = 0.4;
+                scale = 0.35;
                 opacity = 0;
                 zIndex = 0;
                 el.classList.remove('active');
@@ -260,22 +326,22 @@ document.addEventListener('DOMContentLoaded', () => {
             el.style.filter = filter;
         });
 
-        // UPDATE INFO PANEL WITH SMOOTH TEXT SWAP
+        // UPDATE INFO PANEL WITH SMOOTH TEXT
         const currentData = marmitasData[currentIndex];
-        
         infoTag.textContent = currentData.tag;
         infoTitle.textContent = currentData.title;
         infoDesc.textContent = currentData.subtitle;
         infoPrice.textContent = currentData.price;
         infoCal.textContent = currentData.cal;
 
-        // UPDATE BACKGROUND SHAPE COLOR & ROTATION TO MATCH PRODUCT
+        // UPDATE BACKGROUND SHAPE COLOR & ROTATION
         bgCurvedCanvas.style.background = currentData.circleBg;
         bgCurvedCanvas.style.boxShadow = currentData.circleShadow;
         
-        // Add dynamic rotation to the background circle per index
         const circleRot = -12 + (currentIndex * 15);
-        bgCurvedCanvas.style.transform = `translate(-50%, -18%) rotate(${circleRot}deg)`;
+        bgCurvedCanvas.style.transform = isMobile 
+            ? `translate(-50%, -10%) rotate(${circleRot}deg)`
+            : `translate(-50%, -18%) rotate(${circleRot}deg)`;
 
         // UPDATE PAGINATION DOTS
         paginationDots.forEach((dot, idx) => {
@@ -284,14 +350,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // =========================================================================
-    // 4. ONCLICK NAVIGATION CONTROLS (CIRCULAR)
+    // 6. ONCLICK NAVIGATION CONTROLS (CIRCULAR)
     // =========================================================================
     function nextMarmita() {
         if (isAnimating) return;
         isAnimating = true;
         currentIndex = (currentIndex + 1) % totalItems;
         updateCarousel();
-        setTimeout(() => { isAnimating = false; }, 400);
+        setTimeout(() => { isAnimating = false; }, 380);
     }
 
     function prevMarmita() {
@@ -299,7 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
         isAnimating = true;
         currentIndex = (currentIndex - 1 + totalItems) % totalItems;
         updateCarousel();
-        setTimeout(() => { isAnimating = false; }, 400);
+        setTimeout(() => { isAnimating = false; }, 380);
     }
 
     function goToIndex(targetIndex) {
@@ -307,19 +373,22 @@ document.addEventListener('DOMContentLoaded', () => {
         isAnimating = true;
         currentIndex = targetIndex;
         updateCarousel();
-        setTimeout(() => { isAnimating = false; }, 400);
+        setTimeout(() => { isAnimating = false; }, 380);
     }
 
-    // CLICK ON ARROW BUTTONS
-    nextBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        nextMarmita();
-    });
+    if (nextBtn) {
+        nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            nextMarmita();
+        });
+    }
 
-    prevBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        prevMarmita();
-    });
+    if (prevBtn) {
+        prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            prevMarmita();
+        });
+    }
 
     // KEYBOARD NAVIGATION
     window.addEventListener('keydown', (e) => {
@@ -329,15 +398,68 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // =========================================================================
-    // 5. SCROLL (WHEEL) INTERACTION TO ROTATE CAROUSEL
+    // 7. TOUCH FLUIDO EM TEMPO REAL & GESTOS DE SWIPE (CELULARES E TABLETS)
+    // =========================================================================
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchCurrentX = 0;
+    let touchCurrentY = 0;
+    let isTouching = false;
+    let isHorizontalSwipe = false;
+
+    carouselStage.addEventListener('touchstart', (e) => {
+        if (isAnimating) return;
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        touchCurrentX = touchStartX;
+        touchCurrentY = touchStartY;
+        isTouching = true;
+        isHorizontalSwipe = false;
+    }, { passive: true });
+
+    carouselStage.addEventListener('touchmove', (e) => {
+        if (!isTouching || isAnimating) return;
+        touchCurrentX = e.touches[0].clientX;
+        touchCurrentY = e.touches[0].clientY;
+
+        const diffX = touchCurrentX - touchStartX;
+        const diffY = touchCurrentY - touchStartY;
+
+        // Detect horizontal gesture intent
+        if (!isHorizontalSwipe && Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 10) {
+            isHorizontalSwipe = true;
+        }
+
+        // Apply physical live rotation offset while finger moves
+        if (isHorizontalSwipe) {
+            const rotOffset = Math.max(-18, Math.min(18, diffX * 0.08));
+            orbitTrack.style.transform = `rotateY(${rotOffset}deg)`;
+        }
+    }, { passive: true });
+
+    carouselStage.addEventListener('touchend', () => {
+        if (!isTouching) return;
+        isTouching = false;
+        orbitTrack.style.transform = '';
+
+        if (isHorizontalSwipe) {
+            const diffX = touchCurrentX - touchStartX;
+            if (diffX < -35) {
+                nextMarmita();
+            } else if (diffX > 35) {
+                prevMarmita();
+            } else {
+                updateCarousel(); // Reset to current
+            }
+        }
+    }, { passive: true });
+
+    // =========================================================================
+    // 8. SCROLL (WHEEL) INTERACTION TO ROTATE CAROUSEL
     // =========================================================================
     let wheelCooldown = false;
-    const carouselSection = document.getElementById('carouselSection');
-
     carouselSection.addEventListener('wheel', (e) => {
-        // Detect intent to cycle carousel
         if (wheelCooldown) return;
-        
         if (Math.abs(e.deltaY) > 25 || Math.abs(e.deltaX) > 25) {
             wheelCooldown = true;
             if (e.deltaY > 0 || e.deltaX > 0) {
@@ -345,34 +467,12 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 prevMarmita();
             }
-            setTimeout(() => {
-                wheelCooldown = false;
-            }, 600);
-        }
-    }, { passive: true });
-
-    // TOUCH SWIPE NAVIGATION FOR MOBILE/TABLET
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    carouselSection.addEventListener('touchstart', (e) => {
-        touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-
-    carouselSection.addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].screenX;
-        const diffX = touchEndX - touchStartX;
-        if (Math.abs(diffX) > 40) {
-            if (diffX < 0) {
-                nextMarmita();
-            } else {
-                prevMarmita();
-            }
+            setTimeout(() => { wheelCooldown = false; }, 550);
         }
     }, { passive: true });
 
     // =========================================================================
-    // 6. ORGANIC LOGO INTERACTION IN INTRO SECTION
+    // 9. ORGANIC LOGO PARALLAX INTERACTION (INTRO SECTION)
     // =========================================================================
     const logoContainer = document.getElementById('logoOrganicContainer');
     const logoImg = document.getElementById('logoOrganicImg');
@@ -383,8 +483,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const rect = introSection.getBoundingClientRect();
             const x = (e.clientX - rect.left) / rect.width - 0.5;
             const y = (e.clientY - rect.top) / rect.height - 0.5;
-
-            logoImg.style.transform = `translateY(-4px) rotateX(${-y * 14}deg) rotateY(${x * 14}deg) scale(1.02)`;
+            logoImg.style.transform = `translateY(-6px) rotateX(${-y * 14}deg) rotateY(${x * 14}deg) scale(1.02)`;
         });
 
         introSection.addEventListener('mouseleave', () => {
@@ -392,8 +491,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Click logo to scroll smoothly to carousel
+    if (logoContainer) {
+        logoContainer.addEventListener('click', () => {
+            carouselSection.scrollIntoView({ behavior: 'smooth' });
+        });
+    }
+
     // =========================================================================
-    // 7. PRODUCT DETAIL MODAL "DISCOVER THE PRODUCT"
+    // 10. PRODUCT DETAIL MODAL "DISCOVER THE PRODUCT"
     // =========================================================================
     function openProductModal(item) {
         modalTag.textContent = item.tag;
@@ -418,21 +524,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === productModal) closeProductModal();
     });
 
-    // =========================================================================
-    // 8. INTRO ACTION BUTTON SMOOTH SCROLL
-    // =========================================================================
-    const scrollToCarouselBtn = document.getElementById('scrollToCarouselBtn');
-    const scrollHint = document.getElementById('scrollHint');
-
-    function scrollToCarousel() {
-        carouselSection.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    if (scrollToCarouselBtn) scrollToCarouselBtn.addEventListener('click', scrollToCarousel);
-    if (scrollHint) scrollHint.addEventListener('click', scrollToCarousel);
-
-    // INITIAL RENDER
+    // INITIAL SETUP
     updateCarousel(true);
-    window.addEventListener('resize', () => updateCarousel(false));
-});
 
+    // Responsive resize handler with debounce
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            updateCarousel(false);
+        }, 120);
+    });
+});
